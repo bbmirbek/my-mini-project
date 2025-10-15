@@ -16,7 +16,7 @@ import pandas as pd
 def build_report_dataframe():
     """Формирует основной DataFrame с данными из pandas"""
 
-    data_path = Path("data") / "0.xlsx"
+    data_path = Path("data") / "wb_data.xlsx"
     df = read_excel(data_path)
 
     cfg_path = Path("configs") / "alura.json"
@@ -24,7 +24,7 @@ def build_report_dataframe():
         data = json.load(f)
     products = data["products"]
 
-    reklama_path = Path("data") / "1.xlsx"
+    reklama_path = Path("data") / "wb_rekalama_data.xlsx"
     df_reklama = read_excel(reklama_path)
 
     articuls = (
