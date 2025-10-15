@@ -1,0 +1,46 @@
+{
+    "products": {
+        "wdec-blk-red": {
+            "unit_price": 588.39
+        },
+        "aparty-mini-blk": {
+            "unit_price": 688
+        },
+        "scasual-blk-whtred": {
+            "unit_price": 440
+        },
+        "aparty-mini-beige": {
+            "unit_price": 688
+        },
+        "dformal-cloud-white": {
+            "unit_price": 500
+        },
+        "aparty-long-blk": {
+            "unit_price": 1020
+        },
+        "dformal-soft-white": {
+            "unit_price": 510
+        },
+        "scasual-blk-blue": {
+            "unit_price": 440
+        },
+        "aparty-mini-red": {
+            "unit_price": 688
+        },
+        "sdec-blk-red": {
+            "unit_price": 579
+        },
+        "scasual-pistachio": {
+            "unit_price": 440
+        },
+        "dformal-cloud-blk": {
+            "unit_price": 500
+        },
+        "dformal-soft-blk": {
+            "unit_price": 510
+        },
+        "sdec-blk-whtred": {
+            "unit_price": 529
+        }
+    }
+}

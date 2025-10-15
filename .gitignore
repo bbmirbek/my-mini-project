@@ -1,0 +1,17 @@
+# виртуальное окружение
+.venv/
+__pycache__/
+
+# временные файлы
+*.pyc
+*.pyo
+*.log
+
+# отчёты и результат
+reports/
+dist/
+build/
+*.spec
+
+# macOS служебные файлы
+.DS_Store
