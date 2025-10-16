@@ -3,7 +3,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 
 def format_and_save_report(result_df, fines_df, summary_df, pre_last_df, last_df, 
-                           correction,  path="reports/final_report.xlsx"):
+                           correction,  path="reports/report.xlsx"):
     # 1) Выравниваем длины и объединяем
     max_len = max(len(result_df), len(fines_df), len(summary_df), len(pre_last_df), len(last_df), 1)
     result_df  = result_df.reindex(range(max_len))

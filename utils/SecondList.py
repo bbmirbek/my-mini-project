@@ -5,9 +5,9 @@ from matplotlib.patches import FancyBboxPatch
 from matplotlib import gridspec
 
 def export_cards_png_from_excel(
-    xlsx_path="reports/final_report.xlsx",
+    xlsx_path="reports/report.xlsx",
     sheet_name="Отчёт",
-    out_png="reports/presentation_cards.png",
+    out_png="reports/image_report.png",
     # визуальные настройки
     h_gap=0.04, 
     v_gap=0.05,          # было 0.06 → уменьшено в 2 раза
@@ -81,10 +81,10 @@ def export_cards_png_from_excel(
     # ---------- карточки ----------
     GREY   = "#EDEDED"
     BEIGE  = "#F8E1D2"
-    YELLOW = "#FBE5B4"
-    GREEN  = "#C6E0B4"
+    YELLOW = "#F8E79F"
+    GREEN  = "#B3D09E"
     RED    = "#F4CCCC"
-    GREEN_MAIN = "#9BBB59"
+    GREEN_MAIN = "#8BD15C"
     title_color = "#000000"
     text_color  = "#222222"
     stroke_color = "#BFBFBF"
