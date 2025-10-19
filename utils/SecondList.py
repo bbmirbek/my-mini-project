@@ -7,6 +7,7 @@ from matplotlib import gridspec
 def export_cards_png_from_excel(
     xlsx_path,
     out_png,
+    date_range_text,
     sheet_name="Отчёт",
     # визуальные настройки
     h_gap=0.04, 
@@ -17,7 +18,6 @@ def export_cards_png_from_excel(
     inner_gap_scale=1.6,
     # заголовок/даты
     title_text="Alura - Еженедельный отчёт",
-    date_range_text="06.10.2025 - 12.10.2025",
 ):
     def fmt_money(v):
         if isinstance(v, (int, float)):
