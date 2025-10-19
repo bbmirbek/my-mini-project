@@ -13,10 +13,10 @@ from utils.currency import rub_to_kgs
 import pandas as pd
 
 
-def build_report_dataframe():
+def build_report_dataframe(dt_path):
     """Формирует основной DataFrame с данными из pandas"""
 
-    data_path = Path("data") / "0.xlsx"
+    data_path = dt_path / "0.xlsx"
     df = read_excel(data_path)
 
     cfg_path = Path("configs") / "alura.json"
@@ -24,7 +24,7 @@ def build_report_dataframe():
         data = json.load(f)
     products = data["products"]
 
-    reklama_path = Path("data") / "1.xlsx"
+    reklama_path = dt_path / "1.xlsx"
     df_reklama = read_excel(reklama_path)
 
     articuls = (

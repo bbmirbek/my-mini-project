@@ -5,9 +5,9 @@ from matplotlib.patches import FancyBboxPatch
 from matplotlib import gridspec
 
 def export_cards_png_from_excel(
-    xlsx_path="reports/report.xlsx",
+    xlsx_path,
+    out_png,
     sheet_name="Отчёт",
-    out_png="reports/image_report.png",
     # визуальные настройки
     h_gap=0.04, 
     v_gap=0.05,          # было 0.06 → уменьшено в 2 раза
@@ -28,6 +28,8 @@ def export_cards_png_from_excel(
     # ---------- читаем totals ----------
     xlsx_path = Path(xlsx_path)
     out_png = Path(out_png)
+    print(xlsx_path)
+    print(out_png)
     out_png.parent.mkdir(parents=True, exist_ok=True)
 
     df = pd.read_excel(xlsx_path, sheet_name=sheet_name)
