@@ -14,7 +14,6 @@ def main():
             rs = "reports/" + rs
             report_path = Path(rs)
             data_path = Path(st[:-7])
-            print(rs, report_path)
             if not report_path.exists():
                 report_path.mkdir(parents=True, exist_ok=True)
                 result_df, fines_df, summary_df, pre_last_df, last_df, corr = build_report_dataframe(data_path)

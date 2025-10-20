@@ -28,8 +28,6 @@ def export_cards_png_from_excel(
     # ---------- читаем totals ----------
     xlsx_path = Path(xlsx_path)
     out_png = Path(out_png)
-    print(xlsx_path)
-    print(out_png)
     out_png.parent.mkdir(parents=True, exist_ok=True)
 
     df = pd.read_excel(xlsx_path, sheet_name=sheet_name)

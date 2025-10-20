@@ -1,0 +1,31 @@
+{
+    "products": {
+        "лдекольте-чер-крас-bej": {
+            "unit_price": 530
+        },
+        "лдекольте-роза": {
+            "unit_price": 550
+        },
+        "лповсд-чер-синий": {
+            "unit_price": 440
+        },
+        "лповсд-синий": {
+            "unit_price": 440
+        },
+        "лповсд-фисташ": {
+            "unit_price": 440
+        },
+        "winter/green-circle": {
+            "unit_price": 500
+        },
+        "winter/black-rect": {
+            "unit_price": 551
+        },
+        "winter/red-rect": {
+            "unit_price": 500
+        },
+        "winter/black-circle": {
+            "unit_price": 500
+        }
+    }
+}

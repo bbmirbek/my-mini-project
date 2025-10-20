@@ -19,13 +19,21 @@ def build_report_dataframe(dt_path):
     data_path = dt_path / "0.xlsx"
     df = read_excel(data_path)
 
-    cfg_path = Path("configs") / "alura.json"
-    with open(cfg_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    products = data["products"]
+    cfg_paths = Path("configs")
+    products = {}
+
+    for cfg_path in cfg_paths.rglob("*"):
+
+        with open(cfg_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        products = products | data["products"]
 
     reklama_path = dt_path / "1.xlsx"
-    df_reklama = read_excel(reklama_path)
+    if reklama_path.exists():
+        df_reklama = read_excel(reklama_path)
+        rekl = f_reklama(df_reklama)
+    else:
+        rekl = 0
 
     articuls = (
         df["Артикул поставщика"]
@@ -41,7 +49,6 @@ def build_report_dataframe(dt_path):
         .unique()
     )
 
-    rekl = f_reklama(df_reklama)
 
     corrections = [[f_correction(df)], [f_correction_sales(df)], [rekl]]
 

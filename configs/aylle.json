@@ -1,0 +1,25 @@
+{
+    "products": {
+        "wkira-bej": {
+            "unit_price": 703
+        },
+        "aya-black": {
+            "unit_price": 1180
+        },
+        "кира-2507": {
+            "unit_price": 703
+        },
+        "плж23-02": {
+            "unit_price": 600
+        },
+        "wkira-whi": {
+            "unit_price": 703
+        },
+        "kira-bordo": {
+            "unit_price": 703
+        },
+        "плж23-01": {
+            "unit_price": 600
+        }
+    }
+}

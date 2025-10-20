@@ -137,7 +137,7 @@ def format_and_save_report(result_df, fines_df, summary_df, pre_last_df, last_df
         elif col_letter == "S":
             ws[f"{col_letter}{ws.max_row}"].fill = blue_fill
             ws[f"{col_letter}{ws.max_row - 2}"].fill = blue_fill
-        elif col_letter in ["C", "F"]:
+        elif col_letter in ["C", "F", "N"]:
             ws[f"{col_letter}{ws.max_row}"].fill = green_fill
             ws[f"{col_letter}{ws.max_row - 2}"].fill = green_fill
         else:
