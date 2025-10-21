@@ -56,7 +56,7 @@ def build_report_dataframe(dt_path):
     ads_wb = f_ads_wb(df)
 #    site_retention = f_site_retention(df)
     acceptence_of_goods = f_acceptence_of_goods(df)
-    ads = (rub_to_kgs(rekl)) - ads_wb
+    ads = max(0, (rub_to_kgs(rekl)) - ads_wb)
 
     # собираем данные
     number_of_sales, revenue, wb_commission, ekv_commission, \
