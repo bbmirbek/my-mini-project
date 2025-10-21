@@ -97,7 +97,7 @@ def build_report_dataframe(dt_path):
         - warehouse_storage
         - djem
         - ads_wb
-        - sum(fines)
+        - sum(sum_of_fines)
     )
 
     # основной блок
