@@ -29,11 +29,10 @@ def build_report_dataframe(dt_path):
         products = products | data["products"]
 
     reklama_path = dt_path / "1.xlsx"
+    rekl = 0
     if reklama_path.exists():
         df_reklama = read_excel(reklama_path)
         rekl = f_reklama(df_reklama)
-    else:
-        rekl = 0
 
     articuls = (
         df["Артикул поставщика"]
@@ -57,7 +56,7 @@ def build_report_dataframe(dt_path):
     ads_wb = f_ads_wb(df)
 #    site_retention = f_site_retention(df)
     acceptence_of_goods = f_acceptence_of_goods(df)
-    ads = (rub_to_kgs(rekl)) - djem - ads_wb
+    ads = (rub_to_kgs(rekl)) - ads_wb
 
     # собираем данные
     number_of_sales, revenue, wb_commission, ekv_commission, \
