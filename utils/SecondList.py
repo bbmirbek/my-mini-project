@@ -8,6 +8,7 @@ def export_cards_png_from_excel(
     xlsx_path,
     out_png,
     date_range_text,
+    title_text,
     sheet_name="Отчёт",
     # визуальные настройки
     h_gap=0.04, 
@@ -17,13 +18,15 @@ def export_cards_png_from_excel(
     value_fs=12,
     inner_gap_scale=1.6,
     # заголовок/даты
-    title_text="Alura - Еженедельный отчёт",
+    
 ):
     def fmt_money(v):
         if isinstance(v, (int, float)):
             s = f"{v:,.2f}".replace(",", " ").replace(".", ",")
             return f"{s}"
         return str(v)
+
+    title_text= title_text + " Еженедельный отчёт"
 
     # ---------- читаем totals ----------
     xlsx_path = Path(xlsx_path)
@@ -79,6 +82,7 @@ def export_cards_png_from_excel(
     header_df = pd.DataFrame([row_revenue, row_commissions], columns=header_cols)
 
     # ---------- карточки ----------
+    TS = "#80E17F"
     GREY   = "#EDEDED"
     BEIGE  = "#F8E1D2"
     YELLOW = "#F8E79F"

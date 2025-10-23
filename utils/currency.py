@@ -1,14 +1,10 @@
-import requests
+import requests, xml.etree.ElementTree as ET
 
-def rub_to_kgs(amount_rub):
-    url = "https://api.exchangerate.host/latest?base=RUB&symbols=KGS"
-    try:
-        response = requests.get(url)
-        data = response.json()
-        rate = data["rates"]["KGS"]
-
-        return round(amount_rub * rate, 2)
-    except Exception:
-        # fallback если нет интернета
-        fallback_rate = 1.084343
-        return round(amount_rub * fallback_rate, 2)
+def rub_to_kgs(amount_rub: float) -> float:
+    xml = requests.get("https://www.nbkr.kg/XML/daily.xml", timeout=5).content
+    root = ET.fromstring(xml)
+    rub = root.find(".//Currency[@ISOCode='RUB']")
+    nominal = int(rub.findtext("Nominal"))
+    value = float(rub.findtext("Value").replace(",", "."))  # KGS за nominal RUB
+    kgs_per_rub = value / nominal
+    return round(amount_rub * kgs_per_rub, 2)

@@ -59,9 +59,9 @@ def build_report_dataframe(dt_path):
     ads = max(0, (rub_to_kgs(rekl)) - ads_wb)
 
     # собираем данные
-    number_of_sales, revenue, wb_commission, ekv_commission, \
-    amount_to_be_transfered, logistic, unit_cost_of_goods, \
-    total_unit_cost, upsell_service, sum_of_fines = [], [], [], [], [], [], [], [], [], []
+    sales_qty, revenue_net, commission_wb, acquiring_fee = [], [], [], []
+    payout_amount, logistics_cost, unit_cost_of_goods = [], [], []
+    total_cost, upsell_fee_5pct, sum_of_fines = [], [], []
 
     for a in articuls:
         n_sales = count_of_sales(a, df)
@@ -71,29 +71,29 @@ def build_report_dataframe(dt_path):
         logis = f_logistic(a, df)
         cost = products.get(a, {}).get("unit_price", 0)
 
-        number_of_sales.append(n_sales)
-        revenue.append(total_rev)
-        wb_commission.append(total_rev * WB_COMMISSION_RATE)
-        ekv_commission.append(ekv_sum)
-        amount_to_be_transfered.append(to_transfer)
-        logistic.append(logis)
+        sales_qty.append(n_sales)
+        revenue_net.append(total_rev)
+        commission_wb.append(total_rev * WB_COMMISSION_RATE)
+        acquiring_fee.append(ekv_sum)
+        payout_amount.append(to_transfer)
+        logistics_cost.append(logis)
         unit_cost_of_goods.append(cost)
-        total_unit_cost.append(cost * n_sales)
-        upsell_service.append(total_rev * UPSELL_RATE)
+        total_cost.append(cost * n_sales)
+        upsell_fee_5pct.append(total_rev * UPSELL_RATE)
 
     for f in fines:
         fine_sum = f_sum_of_fine(f, df)
         sum_of_fines.append(fine_sum)
 
     transfered_to_the_bank = (
-        sum(amount_to_be_transfered) - sum(logistic) - warehouse_storage - sum(sum_of_fines) - djem - ads_wb
+        sum(payout_amount) - sum(logistics_cost) - warehouse_storage - sum(sum_of_fines) - djem - ads_wb
     )
     net_profit = (
-        sum(amount_to_be_transfered)
+        sum(payout_amount)
         - ads
-        - sum(total_unit_cost)
-        - sum(logistic)
-        - sum(upsell_service)
+        - sum(total_cost)
+        - sum(logistics_cost)
+        - sum(upsell_fee_5pct)
         - warehouse_storage
         - djem
         - ads_wb
@@ -103,12 +103,12 @@ def build_report_dataframe(dt_path):
     # основной блок
     result_df = pd.DataFrame({
         "Артикул поставщика": articuls,
-        "Кол-во продаж": number_of_sales,
-        "Выручка (продажи - возвраты)": revenue,
-        "Комиссия WB": wb_commission,
-        "Комиссия эквайринга": ekv_commission,
-        "Сумма к перечислению": amount_to_be_transfered,
-        "Логистика": logistic
+        "Кол-во продаж": sales_qty,
+        "Выручка (продажи - возвраты)": revenue_net,
+        "Комиссия WB": commission_wb,
+        "Комиссия эквайринга": acquiring_fee,
+        "Сумма к перечислению": payout_amount,
+        "Логистика": logistics_cost
     })
 
     fines_df = pd.DataFrame({
@@ -127,9 +127,9 @@ def build_report_dataframe(dt_path):
     }])
 
     pre_last_df = pd.DataFrame({
-         "Себестоимость единицы товара": unit_cost_of_goods,
-        "Общая себестоимость": total_unit_cost,
-        "Upsell-услуги (5%)": upsell_service,
+        "Себестоимость единицы товара": unit_cost_of_goods,
+        "Общая себестоимость": total_cost,
+        "Upsell-услуги (5%)": upsell_fee_5pct,
     })
 
     last_df = pd.DataFrame([{

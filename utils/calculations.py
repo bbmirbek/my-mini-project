@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 
 def count_of_sales(articul, df):
     sales = len(df[(df["Артикул поставщика"] == articul) & (df["Обоснование для оплаты"] == "Продажа")])
@@ -74,3 +75,68 @@ def f_correction_sales(df):
 
 def f_reklama(df):
     return df["Сумма"].sum()
+
+###############
+
+def f_storage_cost(articul, df):
+    res = df.loc[df["Артикул продавца"] == articul, "Сумма хранения, руб"].sum()
+    return res
+
+
+def f_penalties_amount(articul, df, n):
+    # приведение штрафов к числу на случай строковых значений
+    penalties = pd.to_numeric(df["Общая сумма штрафов"], errors="coerce").fillna(0)
+
+    col = df["Артикул поставщика"]
+    mask_art   = col.astype(str).str.strip().eq(str(articul))
+    mask_empty = col.isna() | col.astype(str).str.strip().eq("")
+
+    base  = penalties[mask_art].sum()
+    share = penalties[mask_empty].sum() / n  # чтобы не делить на 0
+
+    return base + share
+
+
+def f_receiving_fee(articul, df):
+    res = df.loc[df["Артикул поставщика"] == articul, "Платная приемка"].sum()
+    return res
+
+
+def f_ad_spend(articul, df):
+    mask = (
+        df["Кампания"]
+        .astype(str)                                 # на случай чисел/NaN
+        .str.contains(str(articul), case=False, na=False, regex=False)  # подстрока, без регулярок
+    )
+    res = df.loc[mask, "Сумма"].sum()
+    return res
+
+
+def f_buyout_rate(articul, df):  
+    cnt_up = len(df[(df["Артикул поставщика"] == articul) & 
+                       (df["Виды логистики, штрафов и корректировок ВВ"] == "К клиенту при продаже")])
+    cnt_up -= len(df[(df["Артикул поставщика"] == articul) & 
+                       (df["Виды логистики, штрафов и корректировок ВВ"] == "От клиента при возврате")])
+    cnt_dw = cnt_up + len(df[(df["Артикул поставщика"] == articul) & 
+                       (df["Виды логистики, штрафов и корректировок ВВ"] == "К клиенту при отмене")])
+
+    res = cnt_up / cnt_dw * 100
+ 
+    return res
+
+def corr1(name, df):
+    res = df.loc[df["Обоснование для оплаты"] == name, "К перечислению Продавцу за реализованный Товар"].sum()
+    return res
+
+def corr2(articul, df):
+    res = len(df[(df["Артикул поставщика"] == articul) & 
+                       (df["Виды логистики, штрафов и корректировок ВВ"] == "К клиенту при продаже")])
+    res -= len(df[(df["Артикул поставщика"] == articul) & 
+                       (df["Виды логистики, штрафов и корректировок ВВ"] == "От клиента при возврате")])
+    return res
+
+def corr3(articul, df):
+    res = len(df[(df["Артикул поставщика"] == articul) & 
+                       (df["Виды логистики, штрафов и корректировок ВВ"] == "К клиенту при отмене")])
+
+    return res
