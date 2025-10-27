@@ -82,7 +82,6 @@ def export_cards_png_from_excel(
     header_df = pd.DataFrame([row_revenue, row_commissions], columns=header_cols)
 
     # ---------- карточки ----------
-    TS = "#80E17F"
     GREY   = "#EDEDED"
     BEIGE  = "#F8E1D2"
     YELLOW = "#F8E79F"
