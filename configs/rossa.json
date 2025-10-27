@@ -26,6 +26,9 @@
         },
         "winter/black-circle": {
             "unit_price": 500
+        },
+        "дформ-круг-чер": {
+            "unit_price": 560
         }
     }
 }
