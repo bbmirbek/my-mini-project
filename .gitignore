@@ -13,6 +13,7 @@ dist/
 build/
 *.spec
 venv/
+data/
 
 # macOS служебные файлы
 .DS_Store
