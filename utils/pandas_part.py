@@ -56,8 +56,11 @@ def build_report_dataframe(dt_path):
     ads_wb = f_ads_wb(df)
 #    site_retention = f_site_retention(df)
     acceptence_of_goods = f_acceptence_of_goods(df)
-    ads = max(0, (rub_to_kgs(rekl)) - ads_wb)
+    ads = (rub_to_kgs(rekl)) - ads_wb
 
+    if ads_wb * 0.15 > ads:
+        ads = 0
+    
     # собираем данные
     sales_qty, revenue_net, commission_wb, acquiring_fee = [], [], [], []
     payout_amount, logistics_cost, unit_cost_of_goods = [], [], []
