@@ -23,9 +23,11 @@ def main():
                 result_df, fines_df, summary_df, pre_last_df, last_df, corr = build_report_dataframe(data_path)
                 format_and_save_report(result_df, fines_df, summary_df, pre_last_df, last_df, corr, report_path / "report.xlsx")
                 export_cards_png_from_excel(rs + "/report.xlsx", rs + "/image_report.png", str(report_path.name), str(company))
-                
-                detailed_result_df, corr2, Buyout = build_detailed_report(data_path)
-                format_and_save_detailed_report(detailed_result_df, corr2, Buyout, report_path / "detailed_report.xlsx")
+
+                detailed_path = Path("data/" + rs) / "2.xlsx"
+                if detailed_path.exists():
+                    detailed_result_df, corr2, Buyout = build_detailed_report(data_path)
+                    format_and_save_detailed_report(detailed_result_df, corr2, Buyout, report_path / "detailed_report.xlsx")
     
 
 if __name__ == "__main__":
