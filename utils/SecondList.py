@@ -45,17 +45,17 @@ def export_cards_png_from_excel(
     logi   = float(totals.get("Логистика", 0) or 0)
     store  = float(totals.get("Хранение на складе", 0) or 0)
     fines  = float(totals.get("Штрафы", 0) or 0)
-    djem   = float(totals.get("Джем", 0) or 0)
+    djem_and_wb   = float(totals.get("Джем", 0) or 0) + float(totals.get("Реклама со счёта WB", 0) or 0)
     acc    = float(totals.get("Приемка товара", 0) or 0)
-    ads    = float(totals.get("Реклама с собственного счёта", 0) or 0) + float(totals.get("Реклама со счёта WB", 0) or 0)
+    ads    = float(totals.get("Реклама с собственного счёта", 0) or 0) 
     cogs   = float(totals.get("Общая себестоимость", 0) or 0)
     upsell = float(totals.get("Upsell-услуги (5%)", 0) or 0)
-    tobank = float(totals.get("Сумма к перечислению", 0) or 0)
+    tobank = float(totals.get("Перечислено банку", 0) or 0)
     profit = float(totals.get("Чистая Прибыль", 0) or 0)
 
-    cm = [rev, wb, ekv, logi, store, fines, djem, acc, ads, cogs, upsell]
+    cm = [rev, wb, ekv, logi, store, fines, djem_and_wb, acc, ads, cogs, upsell]
     comm_total = wb + ekv
-    total_exp  = comm_total + logi + store + fines + djem + ads + cogs + upsell + acc
+    total_exp  = comm_total + logi + store + fines + djem_and_wb + ads + cogs + upsell + acc
 
     # ---------- верхняя таблица ----------
     header_cols = [
@@ -82,7 +82,6 @@ def export_cards_png_from_excel(
     header_df = pd.DataFrame([row_revenue, row_commissions], columns=header_cols)
 
     # ---------- карточки ----------
-    TS = "#80E17F"
     GREY   = "#EDEDED"
     BEIGE  = "#F8E1D2"
     YELLOW = "#F8E79F"
@@ -99,10 +98,10 @@ def export_cards_png_from_excel(
          ("Логистика", f"{fmt_money(logi)}", GREY),
          ("Хранение", f"{fmt_money(store)}", GREY)],
         [("Приемка", f"{fmt_money(acc)}", GREY),
-         ("Комиссия WB и\nэквайринг", f"{fmt_money(comm_total)}", GREY),
-         ("Джем", f"{fmt_money(djem)}", GREY)],
+         ("Комиссия WB и\n эквайринг", f"{fmt_money(comm_total)}", GREY),
+         ("Джем + Реклама со\n счёта WB", f"{fmt_money(djem_and_wb)}", GREY)],
         [("Итого к оплате", f"{fmt_money(tobank)}", YELLOW)],
-        [("Реклама", f"{fmt_money(ads)}", BEIGE),
+        [("Реклама с\n собственного счёта", f"{fmt_money(ads)}", BEIGE),
          ("Общая себестоимость", f"{fmt_money(cogs)}", BEIGE),
          ("Upsell-услуги (5%)", f"{fmt_money(upsell)}", BEIGE)],
         [("Общие расходы", f"{fmt_money(total_exp)}", RED),
