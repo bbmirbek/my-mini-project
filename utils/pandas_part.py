@@ -58,7 +58,7 @@ def build_report_dataframe(dt_path):
     acceptence_of_goods = f_acceptence_of_goods(df)
     ads = (rub_to_kgs(rekl)) - ads_wb
 
-    if ads_wb * 0.01 > ads:
+    if ads_wb * 0.05 > ads:
         ads = 0
     
     # собираем данные
