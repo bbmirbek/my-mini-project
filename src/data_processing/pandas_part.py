@@ -1,23 +1,21 @@
 from pathlib import Path
 import json
-from utils.constants import WB_COMMISSION_RATE, UPSELL_RATE
-from utils.calculations import (
+from src.utils.constants import WB_COMMISSION_RATE, UPSELL_RATE
+from src.core.calculations import (
     count_of_sales, sum_of_revenue, sum_of_ekv_commission,
     f_amount_to_be_transfered, f_logistic,
     f_warehouse_storage, f_acceptence_of_goods,
     f_sum_of_fine, f_djem, f_ads_wb, f_correction,
     f_correction_sales, f_reklama
 )
-from utils.io_utils import read_excel
-from utils.currency import rub_to_kgs
+
+from src.core.currency import rub_to_kgs
+from src.utils.io_utils import read_excel
 import pandas as pd
 
 
-def build_report_dataframe(dt_path):
+def build_report_dataframe(df, df_reklama):
     """Формирует основной DataFrame с данными из pandas"""
-
-    data_path = dt_path / "0.xlsx"
-    df = read_excel(data_path)
 
     cfg_paths = Path("configs")
     products = {}
@@ -28,10 +26,8 @@ def build_report_dataframe(dt_path):
             data = json.load(f)
         products = products | data["products"]
 
-    reklama_path = dt_path / "1.xlsx"
     rekl = 0
-    if reklama_path.exists():
-        df_reklama = read_excel(reklama_path)
+    if not df_reklama.empty:
         rekl = f_reklama(df_reklama)
 
     articuls = (
@@ -56,8 +52,10 @@ def build_report_dataframe(dt_path):
     ads_wb = f_ads_wb(df)
 #    site_retention = f_site_retention(df)
     acceptence_of_goods = f_acceptence_of_goods(df)
-    ads = max(0, (rub_to_kgs(rekl)) - ads_wb)
+    ads = (rub_to_kgs(rekl)) - ads_wb
 
+    if ads_wb * 0.05 > ads:
+        ads = 0
     # собираем данные
     sales_qty, revenue_net, commission_wb, acquiring_fee = [], [], [], []
     payout_amount, logistics_cost, unit_cost_of_goods = [], [], []

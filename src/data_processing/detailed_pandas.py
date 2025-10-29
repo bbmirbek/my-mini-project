@@ -1,25 +1,20 @@
 from pathlib import Path
 import json
-from utils.constants import WB_COMMISSION_RATE, UPSELL_RATE
-from utils.calculations import (
+from src.utils.constants import WB_COMMISSION_RATE, UPSELL_RATE
+from src.core.calculations import (
     count_of_sales, sum_of_revenue, sum_of_ekv_commission,
     f_amount_to_be_transfered, f_logistic,
     f_storage_cost, f_penalties_amount, f_receiving_fee, f_ad_spend,
     f_reklama, f_buyout_rate, f_djem, corr1, corr2, corr3
 )
-from utils.io_utils import read_excel
-from utils.currency import rub_to_kgs
+from src.utils.io_utils import read_excel
+from src.core.currency import rub_to_kgs
 import pandas as pd
 
 
-def build_detailed_report(dt_path):
-    data_path = dt_path / "0.xlsx"
-    df_data = read_excel(data_path)
-
+def build_detailed_report(df_data, df_storage):
     cfg_paths = Path("configs")
     products = {}
-
-    df_storage = read_excel(dt_path / "2.xlsx")
 
     for cfg_path in cfg_paths.rglob("*"):
 
@@ -27,11 +22,6 @@ def build_detailed_report(dt_path):
             data = json.load(f)
         products = products | data["products"]
 
-    reklama_path = dt_path / "1.xlsx"
-    rekl = 0
-    if reklama_path.exists():
-        df_reklama = read_excel(reklama_path)
-        rekl = f_reklama(df_reklama)
 
     articuls = (
         df_storage["Артикул продавца"]

@@ -1,4 +1,3 @@
-import requests
 import pandas as pd
 
 def count_of_sales(articul, df):
