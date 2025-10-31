@@ -13,6 +13,7 @@ from src.data_processing.detailed_pandas import build_detailed_report
 from src.excel.detailed_formatting import format_and_save_detailed_report
 from src.utils.io_utils import read_excel
 from src.core.brand_detector import check_brand
+from src.core.data_validator import check_data_completeness
 
 import pandas as pd
 
@@ -32,6 +33,8 @@ def process_all_excel_files(brand, start_time, end_time, data_root: Path = Path(
         logger.warning(f"Excel файлы не найдены в {data_root}")
         return
     
+    Brand = brand.capitalize()
+
     parts_data = []
     parts_reklama = []
     parts_storage = []
@@ -96,25 +99,44 @@ def process_all_excel_files(brand, start_time, end_time, data_root: Path = Path(
 
 
     if not parts_data:
-        logger.warning("Нет данных на этот период")
+        logger.warning("Нет данных за этот период.")
         return
     else:
         df_data = pd.concat(parts_data, ignore_index=True, sort=False, copy=False)
-        df_data.drop_duplicates().reset_index(drop=True)
+        
+        # Удаляем дубликаты по всем колонкам КРОМЕ первого столбца и "Дата продажи"
+        # Первый столбец - это df_data.columns[0]
+        first_col = df_data.columns[0]
+        cols_except_date_and_first = [
+            col for col in df_data.columns 
+            if col != first_col
+        ]
+        
+        df_data = df_data.drop_duplicates(subset=cols_except_date_and_first, keep='first').reset_index(drop=True)
+
+        print(len(df_data))
+
 
     if not parts_reklama:
-        logger.warning("Нет данных на этот период")
+        logger.warning("Нет рекламных данных за этот период.")
         return
     else:
         df_reklama = pd.concat(parts_reklama, ignore_index=True, sort=False, copy=False)
-        df_reklama.drop_duplicates().reset_index(drop=True)
+        # Удаляем дубликаты по всем колонкам КРОМЕ "Дата списания"
+        cols_except_date = [col for col in df_reklama.columns if col != "Дата списания"]
+        df_reklama = df_reklama.drop_duplicates(subset=cols_except_date, keep='first').reset_index(drop=True)
 
     if parts_storage:
         df_storage = pd.concat(parts_storage, ignore_index=True, sort=False, copy=False)
-        df_storage.drop_duplicates().reset_index(drop=True)
+        # Удаляем дубликаты по всем колонкам КРОМЕ "Дата"
+        cols_except_date = [col for col in df_storage.columns if col != "Дата"]
+        df_storage = df_storage.drop_duplicates(subset=cols_except_date, keep='first').reset_index(drop=True)
 
+    # ✅ НОВАЯ ПРОВЕРКА ПОЛНОТЫ ДАННЫХ
+    if not check_data_completeness(df_data, df_reklama, start_time, end_time):
+        logger.info("Обработка отменена пользователем")
+        return
 
-    Brand = brand.capitalize()
 
     report_path = Path("reports") / Path(Brand) / (str(start_date) + " - " + str(end_date))
     report_path.mkdir(parents=True, exist_ok=True)

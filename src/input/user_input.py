@@ -19,21 +19,66 @@ def check_period(user_input):
     start = datetime.strptime(m.group(1), "%d.%m.%Y")
     end = datetime.strptime(m.group(2), "%d.%m.%Y")
     
-    if (end < start):
+    try:
+        start = datetime.strptime(m.group(1), "%d.%m.%Y")
+        end = datetime.strptime(m.group(2), "%d.%m.%Y")
+    except ValueError:
+        logging.error("Некорректная дата (например, 32.13.2025)")
+        return False
+    
+    if end < start:
         logging.error("Дата окончания раньше даты начала")
         return False
     
     return True
 
 
-def input_brand():
-    name = input("Введите имя бренда: ").strip()
-    name = name.lower()
-
-    while not name in brands:
-        name = input("Введите правильное имя бренда: ").strip()
+def input_brand() -> str:
+    """
+    Запрашивает имя бренда с автоматическим определением и подтверждением.
+    """
+    # Маппинг сокращений на полные названия
+    brand_mapping = {
+        "alura": "ALURA store",
+        "alura store": "ALURA store",
+        "rossa": "ALURA Fashion",
+        "alura fashion": "ALURA Fashion",
+        "aylle": "aylle",
+        "baylu": "baylu",
+        "all": "all"
+    }
     
-    return name
+    valid_brands = ["ALURA store", "ALURA Fashion", "aylle", "baylu", "all"]
+    
+    while True:
+        name = input("Введите имя бренда: ").strip().lower()
+        
+        # Проверяем, есть ли в маппинге
+        if name in brand_mapping:
+            suggested_brand = brand_mapping[name]
+            
+            # Если название уже полное, возвращаем сразу
+            if name == suggested_brand.lower():
+                return suggested_brand
+            
+            # Иначе спрашиваем подтверждение
+            while True:
+                confirmation = input(
+                    f"Вы имели в виду '{suggested_brand}'? (да/нет): "
+                ).strip().lower()
+                
+                if confirmation in ['да', 'yes', 'y', 'д']:
+                    return suggested_brand
+                elif confirmation in ['нет', 'no', 'n', 'н']:
+                    print("Попробуйте ещё раз.")
+                    break  # Возвращаемся к вводу бренда
+                else:
+                    print("Пожалуйста, введите 'да' или 'нет'")
+        else:
+            print(f"❌ Неизвестный бренд. Доступные бренды:")
+            for brand in valid_brands:
+                print(f"   • {brand}")
+            print()
 
 
 def input_period():

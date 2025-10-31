@@ -21,6 +21,10 @@ def check_brand(df):
         product_code_lower = product_code.lower()
 
         if product_code_lower in data['products']:
+            if brand == "alura":
+                brand = "ALURA store"
+            elif brand == "rossa":
+                brand = "ALURA Fashion"
             return brand
         
     logger.warning("Бренд не определен")
