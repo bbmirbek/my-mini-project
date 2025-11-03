@@ -24,7 +24,7 @@ def main():
                 result_df, fines_df, summary_df, pre_last_df, last_df, corr = build_report_dataframe(data_path)
                 format_and_save_report(result_df, fines_df, summary_df, pre_last_df, last_df, corr, report_path / "report.xlsx")
                 export_cards_png_from_excel(rs + "/report.xlsx", rs + "/image_report.png", str(report_path.name), str(company))
-                write_message(report_path / "message.txt", report_path / "report.xlsx", Brand, start_date, end_date)
+                write_message(report_path / "message.txt", report_path / "report.xlsx", str(company), start_date, end_date)
 
                 
                 detailed_path = Path("data/" + rs) / "2.xlsx"
