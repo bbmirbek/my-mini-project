@@ -4,6 +4,7 @@ from utils.SecondList import export_cards_png_from_excel
 from utils.detailed_pandas import build_detailed_report
 from utils.detailed_excel_fromatting import format_and_save_detailed_report
 from utils.currency import rub_to_kgs
+from utils.message import write_message
 
 from pathlib import Path
 
@@ -23,7 +24,9 @@ def main():
                 result_df, fines_df, summary_df, pre_last_df, last_df, corr = build_report_dataframe(data_path)
                 format_and_save_report(result_df, fines_df, summary_df, pre_last_df, last_df, corr, report_path / "report.xlsx")
                 export_cards_png_from_excel(rs + "/report.xlsx", rs + "/image_report.png", str(report_path.name), str(company))
+                write_message(report_path / "message.txt", report_path / "report.xlsx", Brand, start_date, end_date)
 
+                
                 detailed_path = Path("data/" + rs) / "2.xlsx"
                 if detailed_path.exists():
                     detailed_result_df, corr2, Buyout = build_detailed_report(data_path)
