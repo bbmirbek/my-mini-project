@@ -6,6 +6,8 @@ from utils.detailed_excel_fromatting import format_and_save_detailed_report
 from utils.currency import rub_to_kgs
 from utils.message import write_message
 
+from datetime import date, datetime, time, timedelta
+
 from pathlib import Path
 
 def main():
@@ -20,6 +22,10 @@ def main():
             report_path = Path(rs)
             data_path = Path(st[:-7])            
             if not report_path.exists():
+                today = date.today()
+                start_date = today - timedelta(days=today.weekday())
+                end_date = today + timedelta(days = 6)
+                
                 report_path.mkdir(parents=True, exist_ok=True)
                 result_df, fines_df, summary_df, pre_last_df, last_df, corr = build_report_dataframe(data_path)
                 format_and_save_report(result_df, fines_df, summary_df, pre_last_df, last_df, corr, report_path / "report.xlsx")
